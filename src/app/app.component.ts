@@ -33,12 +33,20 @@ export class AppComponent implements OnInit {
     // resets our todoTitle variable to an empty string
     this.todoTitle = '';
   }
-  deleteTodo(todo: any) {
+  async deleteTodo(todo: any) {
 // show
-this.modaldService.open(ConfirmationModalComponent);
-// if the result is yes
-    const index = this.todoList.findIndex(todoItem => todoItem === todo);
-    this.todoList.splice(index, 1);
-  }
+const modal = this.modaldService.open(ConfirmationModalComponent);
+const component: ConfirmationModalComponent = modal.componentInstance;
+component.modalInstance = modal;
+
+const result = await modal.result;
+
+
+if (result === 'yes') {
+const index = this.todoList.findIndex(todoItem => todoItem === todo);
+this.todoList.splice(index, 1);
+}
+
+}
 
 }
